@@ -23,27 +23,37 @@ public class Target : MonoBehaviour
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
     }
 
-    private Vector3 RandomForce(){
+    private Vector3 RandomForce()
+    {
         return Vector3.up * Random.Range(minSpeed, maxSpeed);
     }
 
-    private float RandomTorque(){
+    private float RandomTorque()
+    {
         return Random.Range(-maxTorque, maxTorque);
     }
 
-    private Vector3 RandomSpawnPos(){
-        return new Vector3(Random.Range(-XRange,XRange), ySpawnPos);
+    private Vector3 RandomSpawnPos()
+    {
+        return new Vector3(Random.Range(-XRange, XRange), ySpawnPos);
     }
 
     private void OnMouseDown()
     {
-        gameManager.UpdateScore(pointValue);
-        Instantiate(explouionParticle, transform.position, explouionParticle.transform.rotation);
-        Destroy(gameObject);
+        if (gameManager.isGameActive)
+        {
+            gameManager.UpdateScore(pointValue);
+            Instantiate(explouionParticle, transform.position, explouionParticle.transform.rotation);
+            Destroy(gameObject);
+            if (gameObject.CompareTag("Bad"))
+            {
+                gameManager.GameOver();
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider collider)
     {
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
 }
